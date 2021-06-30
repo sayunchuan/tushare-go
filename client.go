@@ -58,7 +58,6 @@ func (api *TuShare) doRequest(req *http.Request) (*APIResponse, error) {
 		return nil, fmt.Errorf("oops! Network error")
 	}
 
-
 	// Read request
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -106,4 +105,16 @@ func (api *TuShare) postData(body map[string]interface{}) (*APIResponse, error) 
 		return resp, err
 	}
 	return resp, nil
+}
+
+// CustomRequest 自定义请求
+func (api *TuShare) CustomRequest(apiName string, params map[string]string, fields []string) (*APIResponse, error) {
+	body := map[string]interface{}{
+		"api_name": apiName,
+		"token":    api.token,
+		"fields":   fields,
+		"params":   params,
+	}
+
+	return api.postData(body)
 }
